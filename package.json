@@ -1,8 +1,11 @@
 {
-  "name": "front-end",
+  "name": "aknms-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ag-grid-community": "^19.1.4",
+    "ag-grid-enterprise": "^19.1.4",
+    "ag-grid-react": "^19.1.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-scripts": "2.1.3"
