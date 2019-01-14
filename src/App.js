@@ -25,7 +25,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8081/aknms/v1/event/')
+    fetch('http://backend:8081/aknms/v1/event/')
       .then(result => result.json())
       .then(rowData => this.setState({ rowData }))
   }
