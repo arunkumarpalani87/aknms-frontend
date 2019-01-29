@@ -25,12 +25,13 @@ class EventsPage extends React.Component {
     render() {
         return (
             <div>
-                <h1>AK NMS Events</h1>
+                <h1 style={{"text-align":"center"}}>AK NMS Events Summary</h1>
                 <EventsChart />
                 {/*
                 <table><tr><td><RefreshPoller /></td><td><EventsLastSinceFilter /></td></tr></table>
                 <hr />
                 <EventsTable/>   */}
+                <p></p>
                 <InfiniteTable
                     headers={this.headers}
                     initialRecordCount='50' 

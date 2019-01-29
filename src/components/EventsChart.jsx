@@ -1,6 +1,39 @@
 import React from "react";
 import PieChart from 'react-minimal-pie-chart';
 
+class EventsChartLegend extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+    return (
+            <ul
+                style={{
+                    "text-align": "center",
+                    "list-style": "none"
+                }}
+                >
+                {this.props.data.map((e) => 
+                    <li
+                        style={{
+                            float: "left",
+                            "margin-right": "300px"
+                        }}>
+                        <span
+                            style={{
+                                border: "1px solid #ccc",
+                                float: "left",
+                                width: "12px",
+                                height: "12px",
+                                margin: "2px",
+                                "background-color": e.color
+                            }}>&nbsp; {e.title} &nbsp; {e.value} </span>
+                    </li>
+                )}
+            </ul>
+        );
+    }
+}
 class EventsChart extends React.Component {
     constructor(props) {
         console.log("Calling EventsChart constructor");
@@ -56,7 +89,7 @@ class EventsChart extends React.Component {
             .then(chartData => {
                 console.log("componentDidMount - chartEntry", chartData);
                 // Add more colours if the number of entries increase
-                let coloursArray = ['#E38627', '#C13C37', '#6A2135', '#846968'];
+                let coloursArray = ['Green', 'Red', 'Yellow', 'Orange'];
                 // construct the data for the chart
                 for (let i = 0; i < chartData.length; i++) {
                     chartData[i].title = chartData[i].eventType;
@@ -79,11 +112,13 @@ class EventsChart extends React.Component {
         }
         return (
             <div>
+                <EventsChartLegend data={this.state.chartdata} />
                 <PieChart
                     data={this.state.chartdata}
                     radius={30}
                     style={{ height: '300px' }}
                     animate
+                    animationDuration={2000}
                 />
             </div>
         );

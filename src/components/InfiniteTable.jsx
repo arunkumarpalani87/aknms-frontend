@@ -31,6 +31,20 @@ class InfiniteTable extends React.Component {
         });
     }
 
+    fetchDate(mysqldate) {
+        let year = mysqldate.substr(0,4);
+        let month = mysqldate.substr(4,2);
+        let day = mysqldate.substr(6,2);
+        let hour = mysqldate.substr(8,2);
+        let minute = mysqldate.substr(10,2);
+        let second = mysqldate.substr(12,2);
+        console.log(mysqldate);
+        console.log("Date", year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second);
+        let date = new Date(year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second);
+        console.log("Date", date);
+        return date.toLocaleString();
+    }
+
     async loadData(recordCount) {
         console.log("Calling loadData");
         let lastLoadedIndex = store.getState().lastLoadedIndex;
@@ -55,6 +69,8 @@ class InfiniteTable extends React.Component {
         let rowdata = resultJson.map((row) => {
             let newRow = row;
             newRow.managementIp = row.managedElement.ipAddress;
+            newRow.timestamp = this.fetchDate(row.timestamp.toString());
+            // newRow.timestamp = (new Date(row.timestamp).toDateString()) + " " + (new Date(row.timestamp).toLocaleTimeString());
             delete newRow.managedElement;
             return newRow;
         })
