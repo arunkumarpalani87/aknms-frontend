@@ -1,6 +1,7 @@
 import React from 'react';
 import store from '../store/store.js';
 import compareValues from '../utilities/sort.js';
+import style from '../style/style.css';
 
 class InfiniteTable extends React.Component {
     constructor(props) {
@@ -21,6 +22,18 @@ class InfiniteTable extends React.Component {
         return row;
     }
 
+    createRowWithDiv(rowData) {
+        let row = [];
+        let cellsArray = [];
+        // console.log("Row Data", rowData);
+        for (var field in rowData) {
+            // console.log(rowData[field]);
+            cellsArray.push(<div class="table-data">{rowData[field]}</div>)
+        }
+        row.push(<div class="table-row">{cellsArray}</div>)
+        return row;
+    }
+
     componentDidMount() {
         console.log("Calling componentDidMount");
         this.loadData(this.props.initialRecordCount);
@@ -32,15 +45,15 @@ class InfiniteTable extends React.Component {
     }
 
     fetchDate(mysqldate) {
-        let year = mysqldate.substr(0,4);
-        let month = mysqldate.substr(4,2);
-        let day = mysqldate.substr(6,2);
-        let hour = mysqldate.substr(8,2);
-        let minute = mysqldate.substr(10,2);
-        let second = mysqldate.substr(12,2);
+        let year = mysqldate.substr(0, 4);
+        let month = mysqldate.substr(4, 2);
+        let day = mysqldate.substr(6, 2);
+        let hour = mysqldate.substr(8, 2);
+        let minute = mysqldate.substr(10, 2);
+        let second = mysqldate.substr(12, 2);
         console.log(mysqldate);
-        console.log("Date", year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second);
-        let date = new Date(year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second);
+        console.log("Date", year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second);
+        let date = new Date(year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second);
         console.log("Date", date);
         return date.toLocaleString();
     }
@@ -97,15 +110,25 @@ class InfiniteTable extends React.Component {
                 className="infiniteTable"
                 ref="iScroll"
                 style={{ height: "600px", overflow: "auto" }}>
-                <table align="center">
-                    <style>{"table, th, td {border:1px solid black; border-collapse: collapse;}"}</style>
-                    <tr>
-                        {headers.map(header => (<th>{header.headername}</th>))}
-                    </tr>
-                    {store.getState().rowdata.map(row => (this.createRow(row)))}
-                </table>
+                <div class="table-header">
+                    {headers.map(header => (<div class="header__item"><a id={header.headername} class="filter__link" href="#">{header.headername}</a></div>))}
+                </div>
+
+                <div class="table-content">
+                    {store.getState().rowdata.map(row => (this.createRowWithDiv(row)))}
+                </div>
             </div>
         )
+
+        /* Regular Table - Not Used
+        <table align="center">
+            <style>{"table, th, td {border:1px solid black; border-collapse: collapse;}"}</style>
+            <tr>
+                {headers.map(header => (<th>{header.headername}</th>))}
+            </tr>
+            {store.getState().rowdata.map(row => (this.createRow(row)))}
+        </table>
+        */
     };
 };
 

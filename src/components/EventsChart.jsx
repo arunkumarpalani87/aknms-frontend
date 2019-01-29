@@ -27,7 +27,7 @@ class EventsChartLegend extends React.Component {
                                 height: "12px",
                                 margin: "2px",
                                 "background-color": e.color
-                            }}>&nbsp; {e.title} &nbsp; {e.value} </span>
+                            }}>&nbsp; {e.title} {e.value} </span>
                     </li>
                 )}
             </ul>
@@ -123,6 +123,5 @@ class EventsChart extends React.Component {
             </div>
         );
     }
-
 }
 export default EventsChart;
