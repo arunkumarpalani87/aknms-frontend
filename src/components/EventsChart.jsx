@@ -55,7 +55,7 @@ class EventsChart extends React.Component {
 
     // Unused Function - Not working
     async fetchDataAsync() {
-        let countResult = await fetch('http://localhost:8080/aknms/v1/event/count');
+        let countResult = await fetch('https://localhost:8443/aknms/v1/event/count');
         let countJson = await countResult.json();
         let chartData = countJson.map((eventCountRecord) => {
             let chartEntry = {
@@ -73,7 +73,7 @@ class EventsChart extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:8080/aknms/v1/event/count')
+        fetch('https://localhost:8443/aknms/v1/event/count')
             .then(countResult => countResult.json())
             .then(countJson => {
                 countJson.map(eventCountRecord => {

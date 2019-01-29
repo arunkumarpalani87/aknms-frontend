@@ -17,7 +17,7 @@ class EventsTable extends React.Component {
 
     fetchMoreData = () => {
         /*
-        let resultValue = fetch('http://localhost:8081/aknms/v1/event/')
+        let resultValue = fetch('https://localhost:8443/aknms/v1/event/')
         .then(result => result.json());
         console.log(resultValue);
         this.setState({
