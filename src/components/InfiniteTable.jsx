@@ -81,7 +81,6 @@ class InfiniteTable extends React.Component {
 
         let rowdata = resultJson.map((row) => {
             let newRow = row;
-            newRow.managementIp = row.managedElement.ipAddress;
             newRow.timestamp = this.fetchDate(row.timestamp.toString());
             // newRow.timestamp = (new Date(row.timestamp).toDateString()) + " " + (new Date(row.timestamp).toLocaleTimeString());
             delete newRow.managedElement;

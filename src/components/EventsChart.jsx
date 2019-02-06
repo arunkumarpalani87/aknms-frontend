@@ -78,8 +78,9 @@ class EventsChart extends React.Component {
             .then(countJson => {
                 countJson.map(eventCountRecord => {
                     let chartEntry = {
-                        title: eventCountRecord.eventType,
-                        value: eventCountRecord.count
+                        title: eventCountRecord.title,
+                        value: eventCountRecord.value,
+                        color: eventCountRecord.color
                     }
                     console.log("componentDidMount - chartEntry", chartEntry);
                     return chartEntry;
@@ -88,16 +89,6 @@ class EventsChart extends React.Component {
             })
             .then(chartData => {
                 console.log("componentDidMount - chartEntry", chartData);
-                // Add more colours if the number of entries increase
-                let coloursArray = ['Green', 'Red', 'Yellow', 'Orange'];
-                // construct the data for the chart
-                for (let i = 0; i < chartData.length; i++) {
-                    chartData[i].title = chartData[i].eventType;
-                    delete chartData[i].eventType;
-                    chartData[i].value = chartData[i].count;
-                    delete chartData[i].count;
-                    chartData[i].color = coloursArray[i];
-                }
                 this.setState({ chartdata: chartData });
                 console.log("componentDidMount - chartData", chartData);
             });
@@ -113,6 +104,7 @@ class EventsChart extends React.Component {
         return (
             <div>
                 <EventsChartLegend data={this.state.chartdata} />
+                
                 <PieChart
                     data={this.state.chartdata}
                     radius={30}
@@ -120,6 +112,7 @@ class EventsChart extends React.Component {
                     animate
                     animationDuration={2000}
                 />
+                
             </div>
         );
     }
