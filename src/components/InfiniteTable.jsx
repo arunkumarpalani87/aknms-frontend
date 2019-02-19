@@ -10,6 +10,7 @@ class InfiniteTable extends React.Component {
         store.subscribe(() => { this.forceUpdate() });
     }
 
+    /* Regular Table - Not Used */
     createRow(rowData) {
         let row = [];
         let cellsArray = [];
