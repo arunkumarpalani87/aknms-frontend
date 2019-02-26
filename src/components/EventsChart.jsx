@@ -55,8 +55,12 @@ class EventsChart extends React.Component {
 
     // Unused Function - Not working
     async fetchDataAsync() {
-        let hostname = window.location.hostname;
-        let countResult = await fetch('https://'+hostname+':8443/aknms/v1/event/count');
+        let host_proto = window.location.protocol;
+        let host_port = window.location.port;
+        let host_name = window.location.hostname;
+        let host_pathname = window.location.pathname.split("/")[1];
+        let url = host_proto+"//"+host_name+":"+host_port+"/"+host_pathname;
+        let countResult = await fetch(url+'/event/count');
         let countJson = await countResult.json();
         let chartData = countJson.map((eventCountRecord) => {
             let chartEntry = {
@@ -74,7 +78,13 @@ class EventsChart extends React.Component {
     }
 
     componentDidMount() {
-        fetch('https://localhost:8443/aknms/v1/event/count')
+        let host_proto = window.location.protocol;
+        let host_port = window.location.port;
+        let host_name = window.location.hostname;
+        let host_pathname = window.location.pathname.split("/")[1];
+        let url = host_proto+"//"+host_name+":"+host_port+"/"+host_pathname;
+       
+        fetch(url+'/event/count')
             .then(countResult => countResult.json())
             .then(countJson => {
                 countJson.map(eventCountRecord => {
