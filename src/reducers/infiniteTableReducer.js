@@ -12,6 +12,8 @@ function infiniteTableReducer(state = {
                 lastLoadedIndex : action.lastLoadedIndex
             }
         default :
+            console.log("Reducer table Mount - default State", state);
+
             return state;
     }
 };

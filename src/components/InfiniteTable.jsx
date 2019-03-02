@@ -67,7 +67,7 @@ class InfiniteTable extends React.Component {
         let host_pathname = window.location.pathname.split("/")[1];
         let url = host_proto+"//"+host_name+":"+host_port+"/"+host_pathname;
 
-        let lastLoadedIndex = store.getState().lastLoadedIndex;
+        let lastLoadedIndex = store.getState().table.lastLoadedIndex;
         let resultValue = await fetch(url+'/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount);
         let resultJson = await resultValue.json();
         if (resultJson.length === 0) {
@@ -95,7 +95,7 @@ class InfiniteTable extends React.Component {
         })
 
         // console.log("loadData - rowdata", rowdata)
-        rowdata = Object.assign([], store.getState().rowdata.concat(rowdata));
+        rowdata = Object.assign([], store.getState().table.rowdata.concat(rowdata));
         store.dispatch({
             type: "LOAD_DATA",
             rowdata: rowdata,
@@ -121,7 +121,7 @@ class InfiniteTable extends React.Component {
                 </div>
 
                 <div class="table-content">
-                    {store.getState().rowdata.map(row => (this.createRowWithDiv(row)))}
+                    {store.getState().table.rowdata.map(row => (this.createRowWithDiv(row)))}
                 </div>
             </div>
         )
