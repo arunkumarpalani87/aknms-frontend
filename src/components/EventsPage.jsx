@@ -23,16 +23,15 @@ class EventsPage extends React.Component {
         return (
             <div>
                 <h1 style={{"text-align":"center"}}>AK NMS Events Summary</h1>
-                <EventsChart />
-                {/*
+                {/*<EventsChart />
                 <table><tr><td><RefreshPoller /></td><td><EventsLastSinceFilter /></td></tr></table>
                 <hr />
-                <EventsTable/>   */}
+                <EventsTable/>   
                 <p></p>
                 <InfiniteTable
                     headers={this.headers}
                     initialRecordCount='50' 
-                    additionalRecordCount='10' />
+                    additionalRecordCount='10' /> */}
             </div>
         );
     }
