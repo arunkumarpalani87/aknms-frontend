@@ -1,6 +1,8 @@
 import React from 'react';
 import store from '../store/store.js';
 import compareValues from '../utilities/sort.js';
+import './css/EventsPage.css'
+
 
 class InfiniteTable extends React.Component {
     constructor(props) {
@@ -60,11 +62,10 @@ class InfiniteTable extends React.Component {
 
     async loadData(recordCount) {
         console.log("Calling loadData");
-        let host_proto = window.location.protocol;
-        let host_port = window.location.port;
+        let host_port = ':8443';
         let host_name = window.location.hostname;
-        let host_pathname = window.location.pathname.split("/")[1];
-        let url = host_proto+"//"+host_name+":"+host_port+"/"+host_pathname;
+        let host_pathname = '/aknms/v1';
+        let url = "https://"+host_name+host_port+host_pathname;
 
         let lastLoadedIndex = store.getState().lastLoadedIndex;
         let resultValue = await fetch(url+'/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount);

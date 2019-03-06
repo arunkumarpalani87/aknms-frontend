@@ -1,5 +1,6 @@
 import React from "react";
 import PieChart from 'react-minimal-pie-chart';
+import './css/EventsPage.css'
 
 class EventsChartLegend extends React.Component {
     constructor(props) {
@@ -55,11 +56,11 @@ class EventsChart extends React.Component {
 
     // Unused Function - Not working
     async fetchDataAsync() {
-        let host_proto = window.location.protocol;
-        let host_port = window.location.port;
+        let host_port = ':8443';
         let host_name = window.location.hostname;
-        let host_pathname = window.location.pathname.split("/")[1];
-        let url = host_proto+"//"+host_name+":"+host_port+"/"+host_pathname;
+        let host_pathname = '/aknms/v1';
+        let url = "https://"+host_name+host_port+host_pathname;
+
         let countResult = await fetch(url+'/event/count');
         let countJson = await countResult.json();
         let chartData = countJson.map((eventCountRecord) => {
@@ -78,11 +79,11 @@ class EventsChart extends React.Component {
     }
 
     componentDidMount() {
-        let host_proto = window.location.protocol;
-        let host_port = window.location.port;
+        let host_port = ':8443';
         let host_name = window.location.hostname;
-        let host_pathname = window.location.pathname.split("/")[1];
-        let url = host_proto+"//"+host_name+":"+host_port+"/"+host_pathname;
+        let host_pathname = '/aknms/v1';
+        let url = "https://"+host_name+host_port+host_pathname;
+
        
         fetch(url+'/event/count')
             .then(countResult => countResult.json())

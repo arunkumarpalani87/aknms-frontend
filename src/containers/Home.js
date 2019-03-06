@@ -3,14 +3,13 @@ import { Link, withRouter } from "react-router-dom";
 
 import "./css/Home.css";
 
-export default class Home extends Component {
+class Home extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      isLoading: true,
-      notes: []
+      isLoading: true
     };
   }
   renderLander() {
@@ -39,3 +38,6 @@ export default class Home extends Component {
     );
   }
 }
+
+
+export default withRouter(Home);

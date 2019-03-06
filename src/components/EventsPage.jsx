@@ -1,6 +1,8 @@
 import React from "react";
 import EventsChart from "./EventsChart.jsx";
 import InfiniteTable from './InfiniteTable.jsx';
+//import './css/EventsPage.css'
+
 
 class EventsPage extends React.Component {
 
@@ -20,7 +22,7 @@ class EventsPage extends React.Component {
     render() {
         return (
             <div>
-                <h1 style={{"text-align":"center"}}>AK NMS Events Summary</h1>
+                <h1 style={{"textAlign":"center"}}>AK NMS Events Summary</h1>
                 <EventsChart />
                 {/*
                 <table><tr><td><RefreshPoller /></td><td><EventsLastSinceFilter /></td></tr></table>
