@@ -1,7 +1,6 @@
 import React from 'react';
 import store from '../store/store.js';
 import compareValues from '../utilities/sort.js';
-import style from '../style/style.css';
 
 class InfiniteTable extends React.Component {
     constructor(props) {

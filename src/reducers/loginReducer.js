@@ -1,4 +1,4 @@
-export function eventChartReducer(state={isbn:undefined}, action){
+export function loginReducer(state={isbn:undefined}, action){
     switch(action.type){
         case 'selected':
             return {

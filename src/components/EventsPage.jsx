@@ -1,6 +1,4 @@
 import React from "react";
-import PropTypes from 'prop-types';
-import EventsTable from "./EventsTable.jsx";
 import EventsChart from "./EventsChart.jsx";
 import InfiniteTable from './InfiniteTable.jsx';
 
