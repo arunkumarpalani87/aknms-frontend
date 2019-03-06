@@ -1,12 +1,8 @@
-export function loginReducer(state={isbn:undefined}, action){
+export function loginReducer(state={userPoolWebClientIdPasswd:undefined}, action){
     switch(action.type){
-        case 'selected':
-            return {
-                isbn: action.isbn
-            };
         default:
             return {
-                isbn: undefined
+                isbn: jb71k92epr8svfvo36lvlq91i59qjdluk326qot49pu3koh8t4t
             };
     }
 };

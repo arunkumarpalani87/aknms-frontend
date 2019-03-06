@@ -1,10 +1,8 @@
-import { Auth } from "aws-amplify";
 import React, { Component } from "react";
 import { ControlLabel, FormControl, FormGroup, HelpBlock } from "react-bootstrap";
+import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
-import './css/Home.css';
-
-
+import "./css/Home.css";
 
 export default class Signup extends Component {
   constructor(props) {
@@ -29,6 +27,7 @@ export default class Signup extends Component {
   }
 
   validateConfirmationForm() {
+    console.log(this.state.confirmationCode+" asdert")
     return this.state.confirmationCode.length > 0;
   }
 
@@ -37,15 +36,19 @@ export default class Signup extends Component {
       [event.target.id]: event.target.value
     });
   }
+
   handleSubmit = async event => {
     event.preventDefault();
-  
+    console.log("inside submit");
     this.setState({ isLoading: true });
-  
     try {
       const newUser = await Auth.signUp({
         username: this.state.email,
-        password: this.state.password
+        password: this.state.password,
+        attributes: {
+          email: this.state.email
+        }
+ 
       });
       this.setState({
         newUser
@@ -53,19 +56,21 @@ export default class Signup extends Component {
     } catch (e) {
       alert(e.message);
     }
-  
     this.setState({ isLoading: false });
   }
   
   handleConfirmationSubmit = async event => {
     event.preventDefault();
-  
     this.setState({ isLoading: true });
-  
+    console.log("handleConfirmationSubmit submit");
+
     try {
       await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
+      console.log("handleConfirmationSubmit confirmSignUp");
+
       await Auth.signIn(this.state.email, this.state.password);
-  
+      console.log("handleConfirmationSubmit signIn");
+
       this.props.userHasAuthenticated(true);
       this.props.history.push("/");
     } catch (e) {

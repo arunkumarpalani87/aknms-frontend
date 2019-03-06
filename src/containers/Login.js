@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import LoaderButton from "../components/LoaderButton";
 import { Auth } from "aws-amplify";
+import React, { Component } from "react";
+import { ControlLabel, FormControl, FormGroup } from "react-bootstrap";
+import LoaderButton from "../components/LoaderButton";
 import "./css/Home.css";
 
 export default class Login extends Component {
     constructor(props) {
         super(props);
-
+        
         this.state = {
             isLoading: false,
             email: "",
@@ -19,6 +19,7 @@ export default class Login extends Component {
     validateForm() {
         return this.state.email.length > 0 && this.state.password.length > 0;
     }
+
 
     handleChange = event => {
         this.setState({
