@@ -1,20 +1,25 @@
 import React from "react";
 import PieChart from 'react-minimal-pie-chart';
-import './css/EventsPage.css'
+import store from "../store/store";
+import './css/EventsPage.css';
 
 class EventsChartLegend extends React.Component {
     constructor(props) {
         super(props);
+        this.host_port = ':8443';
+        this.host_name = window.location.hostname;
+        this.host_pathname = '/aknms/v1/event/count';
+        this.url = "https://" + this.host_name + this.host_port + this.host_pathname;
     }
     render() {
-    return (
+        return (
             <ul
                 style={{
                     "text-align": "center",
                     "list-style": "none"
                 }}
-                >
-                {this.props.data.map((e) => 
+            >
+                {this.props.data.map((e) =>
                     <li
                         style={{
                             float: "left",
@@ -56,12 +61,8 @@ class EventsChart extends React.Component {
 
     // Unused Function - Not working
     async fetchDataAsync() {
-        let host_port = ':8443';
-        let host_name = window.location.hostname;
-        let host_pathname = '/aknms/v1';
-        let url = "https://"+host_name+host_port+host_pathname;
 
-        let countResult = await fetch(url+'/event/count');
+        let countResult = await fetch(this.url + '?username=' + store.getState().loginReducer.username);
         let countJson = await countResult.json();
         let chartData = countJson.map((eventCountRecord) => {
             let chartEntry = {
@@ -77,15 +78,8 @@ class EventsChart extends React.Component {
         console.log("fetchData - chartData", chartData.then());
         return chartData;
     }
-
     componentDidMount() {
-        let host_port = ':8443';
-        let host_name = window.location.hostname;
-        let host_pathname = '/aknms/v1';
-        let url = "https://"+host_name+host_port+host_pathname;
-
-       
-        fetch(url+'/event/count')
+        fetch(this.url + '?username=' + store.getState().loginReducer.username)
             .then(countResult => countResult.json())
             .then(countJson => {
                 countJson.map(eventCountRecord => {
@@ -116,7 +110,7 @@ class EventsChart extends React.Component {
         return (
             <div>
                 <EventsChartLegend data={this.state.chartdata} />
-                
+
                 <PieChart
                     data={this.state.chartdata}
                     radius={30}
@@ -124,7 +118,7 @@ class EventsChart extends React.Component {
                     animate
                     animationDuration={2000}
                 />
-                
+
             </div>
         );
     }

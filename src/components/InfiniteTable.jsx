@@ -1,13 +1,17 @@
 import React from 'react';
 import store from '../store/store.js';
 import compareValues from '../utilities/sort.js';
-import './css/EventsPage.css'
+import './css/EventsPage.css';
 
 
 class InfiniteTable extends React.Component {
     constructor(props) {
         console.log("Calling InfiniteTable Constructor");
         super(props);
+        this.host_port = ':8443';
+        this.host_name = window.location.hostname;
+        this.host_pathname = '/aknms/v1';
+        this.url = "https://" + this.host_name + this.host_port + this.host_pathname;
         store.subscribe(() => { this.forceUpdate() });
     }
 
@@ -62,13 +66,8 @@ class InfiniteTable extends React.Component {
 
     async loadData(recordCount) {
         console.log("Calling loadData");
-        let host_port = ':8443';
-        let host_name = window.location.hostname;
-        let host_pathname = '/aknms/v1';
-        let url = "https://"+host_name+host_port+host_pathname;
-
-        let lastLoadedIndex = store.getState().lastLoadedIndex;
-        let resultValue = await fetch(url+'/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount);
+        let lastLoadedIndex = store.getState().infiniteTableReducer.lastLoadedIndex;
+        let resultValue = await fetch(this.url + '/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount + '&username=' + store.getState().loginReducer.username);
         let resultJson = await resultValue.json();
         if (resultJson.length === 0) {
             console.log("loadData - fetch returned empty array");
@@ -95,7 +94,7 @@ class InfiniteTable extends React.Component {
         })
 
         // console.log("loadData - rowdata", rowdata)
-        rowdata = Object.assign([], store.getState().rowdata.concat(rowdata));
+        rowdata = Object.assign([], store.getState().infiniteTableReducer.rowdata.concat(rowdata));
         store.dispatch({
             type: "LOAD_DATA",
             rowdata: rowdata,
@@ -121,7 +120,7 @@ class InfiniteTable extends React.Component {
                 </div>
 
                 <div class="table-content">
-                    {store.getState().rowdata.map(row => (this.createRowWithDiv(row)))}
+                    {store.getState().infiniteTableReducer.rowdata.map(row => (this.createRowWithDiv(row)))}
                 </div>
             </div>
         )
@@ -132,7 +131,7 @@ class InfiniteTable extends React.Component {
             <tr>
                 {headers.map(header => (<th>{header.headername}</th>))}
             </tr>
-            {store.getState().rowdata.map(row => (this.createRow(row)))}
+            {store.getState().infiniteTableReducer.rowdata.map(row => (this.createRow(row)))}
         </table>
         */
     };

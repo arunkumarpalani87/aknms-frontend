@@ -1,8 +1,17 @@
-export function loginReducer(state={userPoolWebClientIdPasswd:undefined}, action){
-    switch(action.type){
-        default:
+function loginReducer(state = {
+    username: ''
+}, action) {
+    console.log("login Reducer Action", action);
+    switch (action.type) {
+        case 'LOGIN':
+            console.log("Reducer table Mount - Curr State", state);
+            console.log("Reducer table Mount - Action rowdata", action.rowdata);
             return {
-                isbn: jb71k92epr8svfvo36lvlq91i59qjdluk326qot49pu3koh8t4t
-            };
+                username: action.username,
+            }
+        default:
+            return state;
     }
 };
+
+export default loginReducer;

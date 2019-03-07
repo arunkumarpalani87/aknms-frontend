@@ -2,12 +2,14 @@ import { Auth } from "aws-amplify";
 import React, { Component } from "react";
 import { ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import LoaderButton from "../components/LoaderButton";
+import store from '../store/store';
 import "./css/Home.css";
 
 export default class Login extends Component {
     constructor(props) {
         super(props);
-        
+        store.subscribe(() => { this.forceUpdate() });
+
         this.state = {
             isLoading: false,
             email: "",
@@ -34,7 +36,13 @@ export default class Login extends Component {
 
         try {
             await Auth.signIn(this.state.email, this.state.password);
+
             this.props.userHasAuthenticated(true);
+            store.dispatch({
+                type: "LOGIN",
+                username: this.state.email
+            });
+
             this.props.history.push("/eventsPage");
         } catch (e) {
             alert(e.message);

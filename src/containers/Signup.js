@@ -3,19 +3,29 @@ import { ControlLabel, FormControl, FormGroup, HelpBlock } from "react-bootstrap
 import { Auth } from "aws-amplify";
 import LoaderButton from "../components/LoaderButton";
 import "./css/Home.css";
+import store from '../store/store';
 
 export default class Signup extends Component {
   constructor(props) {
     super(props);
-
+    store.subscribe(() => { this.forceUpdate() });
     this.state = {
       isLoading: false,
       email: "",
       password: "",
+      managedElements: "",
+      userData: {},
       confirmPassword: "",
       confirmationCode: "",
       newUser: null
     };
+  }
+
+  validateIPaddress(ipaddress) {
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+      return (true);
+    }
+    return (false);
   }
 
   validateForm() {
@@ -27,7 +37,7 @@ export default class Signup extends Component {
   }
 
   validateConfirmationForm() {
-    console.log(this.state.confirmationCode+" asdert")
+    console.log(this.state.confirmationCode + " code")
     return this.state.confirmationCode.length > 0;
   }
 
@@ -41,14 +51,28 @@ export default class Signup extends Component {
     event.preventDefault();
     console.log("inside submit");
     this.setState({ isLoading: true });
+    let data = { username: this.state.email, managedElements: [] };
     try {
+      if (this.state.managedElements.length > 0) {
+        this.state.managedElements.split(',').forEach(element => {
+          if (!this.validateIPaddress(element)) {
+            this.setState({ isLoading: false });
+            throw new Error('Invalid IpAddress list');;
+          } else {
+            let ipaddress = { ipAddress: element };
+            data.managedElements.push(ipaddress)
+          }
+        }
+        );
+      }
+      this.state.userData = data;
       const newUser = await Auth.signUp({
         username: this.state.email,
         password: this.state.password,
         attributes: {
           email: this.state.email
         }
- 
+
       });
       this.setState({
         newUser
@@ -58,7 +82,7 @@ export default class Signup extends Component {
     }
     this.setState({ isLoading: false });
   }
-  
+
   handleConfirmationSubmit = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
@@ -70,15 +94,37 @@ export default class Signup extends Component {
 
       await Auth.signIn(this.state.email, this.state.password);
       console.log("handleConfirmationSubmit signIn");
+      let host_port = ':8443';
+      let host_name = window.location.hostname;
+      let host_pathname = '/aknms/v1/user';
+      let url = "https://" + host_name + host_port + host_pathname;
 
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: this.state.userData
+      })
+        .then(function (response) {
+          return response.json()
+        }).then(function (body) {
+          console.log(body);
+        });
+      console.log(this.state.managedElements)
       this.props.userHasAuthenticated(true);
+
       this.props.history.push("/");
+      store.dispatch({
+        type: "LOGIN",
+        username: this.state.email
+      });
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });
     }
   }
-  
+
 
   renderConfirmationForm() {
     return (
@@ -116,6 +162,15 @@ export default class Signup extends Component {
             type="email"
             value={this.state.email}
             onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="managedElements" bsSize="large">
+          <ControlLabel>Map Devices</ControlLabel>
+          <FormControl
+            placeholder="Comma separated device IPs"
+            value={this.state.managedElements}
+            onChange={this.handleChange}
+            type="text"
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">

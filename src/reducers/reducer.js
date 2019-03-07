@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-import { loginReducer } from './loginReducer';
-import { infiniteTableReducer } from './infiniteTableReducer';
+import infiniteTableReducer from './infiniteTableReducer';
+import loginReducer from './loginReducer';
+const rootReducer = combineReducers({
 
-export default combineReducers({
-  loginReducer,
-  infiniteTableReducer
+  loginReducer, infiniteTableReducer
+})
+export default rootReducer;
