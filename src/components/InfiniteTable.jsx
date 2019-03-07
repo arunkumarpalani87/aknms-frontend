@@ -67,7 +67,7 @@ class InfiniteTable extends React.Component {
     async loadData(recordCount) {
         console.log("Calling loadData");
         let lastLoadedIndex = store.getState().infiniteTableReducer.lastLoadedIndex;
-        let resultValue = await fetch(this.url + '/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount + '&username=' + store.getState().loginReducer.username);
+        let resultValue = await fetch(this.url + '/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount + '&user=' + store.getState().loginReducer.username);
         let resultJson = await resultValue.json();
         if (resultJson.length === 0) {
             console.log("loadData - fetch returned empty array");

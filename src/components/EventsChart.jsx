@@ -3,6 +3,7 @@ import PieChart from 'react-minimal-pie-chart';
 import store from "../store/store";
 import './css/EventsPage.css';
 
+
 class EventsChartLegend extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +11,8 @@ class EventsChartLegend extends React.Component {
         this.host_name = window.location.hostname;
         this.host_pathname = '/aknms/v1/event/count';
         this.url = "https://" + this.host_name + this.host_port + this.host_pathname;
+        store.subscribe(() => { this.forceUpdate() });
+
     }
     render() {
         return (
@@ -44,6 +47,11 @@ class EventsChart extends React.Component {
     constructor(props) {
         console.log("Calling EventsChart constructor");
         super(props);
+        this.host_port = ':8443';
+        this.host_name = window.location.hostname;
+        this.host_pathname = '/aknms/v1/event/count';
+        this.url = "https://" + this.host_name + this.host_port + this.host_pathname;
+        store.subscribe(() => { this.forceUpdate() });
         this.state = {
             chartdata: []
         }
@@ -62,7 +70,7 @@ class EventsChart extends React.Component {
     // Unused Function - Not working
     async fetchDataAsync() {
 
-        let countResult = await fetch(this.url + '?username=' + store.getState().loginReducer.username);
+        let countResult = await fetch(this.url + '?user=' + store.getState().loginReducer.username);
         let countJson = await countResult.json();
         let chartData = countJson.map((eventCountRecord) => {
             let chartEntry = {
@@ -79,7 +87,7 @@ class EventsChart extends React.Component {
         return chartData;
     }
     componentDidMount() {
-        fetch(this.url + '?username=' + store.getState().loginReducer.username)
+        fetch(this.url + '?user=' + store.getState().loginReducer.username)
             .then(countResult => countResult.json())
             .then(countJson => {
                 countJson.map(eventCountRecord => {
