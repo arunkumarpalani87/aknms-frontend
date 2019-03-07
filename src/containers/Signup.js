@@ -14,7 +14,6 @@ export default class Signup extends Component {
       email: "",
       password: "",
       managedElements: "",
-      userData: {},
       confirmPassword: "",
       confirmationCode: "",
       newUser: null
@@ -65,7 +64,26 @@ export default class Signup extends Component {
         }
         );
       }
-      this.state.userData = data;
+      
+      let host_port = ':8443';
+      let host_name = window.location.hostname;
+      let host_pathname = '/aknms/v1/user';
+      let url = "https://" + '35.196.62.162' + host_port + host_pathname;
+      alert(JSON.stringify(data))
+      let response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(function (response) {
+          return response.json()
+        }).then(function (body) {
+          console.log(body);
+        });
+
       const newUser = await Auth.signUp({
         username: this.state.email,
         password: this.state.password,
@@ -77,6 +95,7 @@ export default class Signup extends Component {
       this.setState({
         newUser
       });
+      
     } catch (e) {
       alert(e.message);
     }
@@ -94,23 +113,6 @@ export default class Signup extends Component {
 
       await Auth.signIn(this.state.email, this.state.password);
       console.log("handleConfirmationSubmit signIn");
-      let host_port = ':8443';
-      let host_name = window.location.hostname;
-      let host_pathname = '/aknms/v1/user';
-      let url = "https://" + host_name + host_port + host_pathname;
-
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json'
-        },
-        body: this.state.userData
-      })
-        .then(function (response) {
-          return response.json()
-        }).then(function (body) {
-          console.log(body);
-        });
       console.log(this.state.managedElements)
       this.props.userHasAuthenticated(true);
 

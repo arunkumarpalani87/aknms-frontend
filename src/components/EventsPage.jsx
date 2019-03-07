@@ -1,6 +1,9 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
+import store from "../store/store.js";
 import EventsChart from "./EventsChart.jsx";
 import InfiniteTable from './InfiniteTable.jsx';
+
 
 
 class EventsPage extends React.Component {
@@ -8,14 +11,15 @@ class EventsPage extends React.Component {
     constructor(props) {
         console.log("Calling EventsPage Constructor");
         super(props);
+        store.subscribe(() => { this.forceUpdate() });
     }
 
     headers = [
         { headername: "ID", fieldname: "id" },
         { headername: "Timestamp", fieldname: "timestamp" },
+        { headername: "IPAddress", fieldname: "ipAddress" },
         { headername: "Log Message", fieldname: "message" },
-        { headername: "Log Type", fieldname: "type" },
-        { headername: "IPAddress", fieldname: "ipAddress" }
+        { headername: "Log Type", fieldname: "type" }
     ];
 
     render() {
@@ -42,4 +46,4 @@ class EventsPage extends React.Component {
 }
 */
 
-export default EventsPage;
+export default withRouter(EventsPage);
