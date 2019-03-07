@@ -68,8 +68,8 @@ export default class Signup extends Component {
       let host_port = ':8443';
       let host_name = window.location.hostname;
       let host_pathname = '/aknms/v1/user';
-      let url = "https://" + '35.196.62.162' + host_port + host_pathname;
-      alert(JSON.stringify(data))
+      let url = "https://" + host_name + host_port + host_pathname;
+
       let response = await fetch(url, {
         method: 'POST',
         headers: {
