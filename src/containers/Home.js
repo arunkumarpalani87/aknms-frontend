@@ -16,7 +16,7 @@ class Home extends Component {
     return (
       <div className="Home">
         <div className="lander">
-          <h1>AKNMS</h1>
+          <img src="android-chrome-192x192.png" alt="AKNMS"/>
           <p>A Simple event viewer</p>
         </div>
       </div>
