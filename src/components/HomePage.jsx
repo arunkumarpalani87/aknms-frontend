@@ -47,6 +47,11 @@ class HomePage extends Component {
       username: '',
       userrole: {}
     });
+    store.dispatch({
+      type: "LOAD_DATA",
+      rowdata: [],
+      lastLoadedIndex: 0
+    });
     this.props.history.push("/login");
   }
 
