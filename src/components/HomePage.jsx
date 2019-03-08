@@ -69,7 +69,7 @@ class HomePage extends Component {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">AKNMS</Link>
+              <Link to="/">AKNMS simple event viewer</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
