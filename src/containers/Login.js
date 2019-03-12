@@ -36,24 +36,23 @@ export default class Login extends Component {
 
         try {
             await Auth.signIn(this.state.email, this.state.password);
-
             this.props.userHasAuthenticated(true);
+
             store.dispatch({
                 type: "LOGIN",
                 username: this.state.email
             });
 
+            let info = await Auth.currentSession()
+            let userInfo = JSON.stringify(info);
+            sessionStorage.setItem('username', this.state.email )
+            sessionStorage.setItem('userInfo', userInfo );
             this.props.history.push("/eventsPage");
         } catch (e) {
             alert(e.message);
             this.setState({ isLoading: false });
         }
     }
-
-
-
-
-
 
     render() {
         return (

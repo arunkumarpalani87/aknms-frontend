@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import store from "../store/store.js";
 import EventsChart from "./EventsChart.jsx";
 import InfiniteTable from './InfiniteTable.jsx';
-
+import Login from "../containers/Login.js";
 
 
 class EventsPage extends React.Component {
@@ -22,16 +22,18 @@ class EventsPage extends React.Component {
         { headername: "Log Type", fieldname: "type" }
     ];
 
-    render() {
+    renderLogin() {
+        return (
+          <div className="Home">
+            <Login />
+          </div>
+        );
+      }
+    renderEventsPage() {
         return (
             <div>
                 <h1 style={{ "textAlign": "center" }}>AK NMS Events Summary</h1>
                 <EventsChart />
-                {/* 
-                <table><tr><td><RefreshPoller /></td><td><EventsLastSinceFilter /></td></tr></table>
-                <hr />
-                <EventsTable/>   */}
-                <p></p>
                 <InfiniteTable
                     headers={this.headers}
                     initialRecordCount='50'
@@ -39,11 +41,14 @@ class EventsPage extends React.Component {
             </div>
         );
     }
-};
 
-/*EventsPage.contextTypes = {
-    store : PropTypes.object
+
+render() {
+    return (
+      <div className="Home" id="eventsPage">
+        {sessionStorage.getItem('username') != null ? this.renderEventsPage() : this.renderLogin()}
+      </div>
+    );
+  }
 }
-*/
-
 export default withRouter(EventsPage);

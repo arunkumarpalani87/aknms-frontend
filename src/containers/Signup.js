@@ -116,11 +116,11 @@ export default class Signup extends Component {
       console.log(this.state.managedElements)
       this.props.userHasAuthenticated(true);
 
-      this.props.history.push("/");
+      await Auth.signOut();
       store.dispatch({
-        type: "LOGIN",
-        username: this.state.email
+        type: "CLEAR_DATA"
       });
+      this.props.history.push("/login");
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });

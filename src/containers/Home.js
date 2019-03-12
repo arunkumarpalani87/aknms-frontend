@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-
+import store from '../store/store';
 import "./css/Home.css";
 
 class Home extends Component {
@@ -33,7 +33,7 @@ class Home extends Component {
   render() {
     return (
       <div className="Home">
-        {this.props.isAuthenticated ? this.renderEventsPage() : this.renderLander()}
+        {store.getState().loginReducer.loggedin ? this.renderEventsPage() : this.renderLander()}
       </div>
     );
   }

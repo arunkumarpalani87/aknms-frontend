@@ -9,7 +9,7 @@
   }
   
   .Home .lander p {
-    color: #999;
+    color: rgb(54, 145, 231);
   }
   @media all and (min-width: 480px) {
     .Login {
@@ -36,6 +36,6 @@
   .Signup form span.help-block {
     font-size: 14px;
     padding-bottom: 10px;
-    color: #999;
+    color: rgb(59, 164, 224);
   }
   

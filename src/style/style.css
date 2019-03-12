@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .infiniteTable {
   width: 100%;
-  border: 1px solid #EEEEEE;
+  border: 1px solid rgb(161, 154, 154);
   height: 600px;
   overflow: auto;
 }
@@ -33,7 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 .table-header {
   display: flex;
   width: 100%;
-  background: #000;
+  background: rgb(134, 130, 130);
   padding: 18px 0;
 }
 
