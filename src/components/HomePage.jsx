@@ -20,12 +20,15 @@ class HomePage extends Component {
 
   }
 
+  
+
   async componentDidMount() {
     try {
       await Auth.currentSession();
       this.userHasAuthenticated(true);
     }
     catch (e) {
+      
       if (e !== 'No current user') {
         alert(e);
       }
@@ -39,19 +42,13 @@ class HomePage extends Component {
   }
 
   handleLogout = async event => {
+    store.dispatch({
+      type: "CLEAR_DATA"
+    });
+    alert("test clear")
+    sessionStorage.clear();
     await Auth.signOut();
-
     this.userHasAuthenticated(false);
-    store.dispatch({
-      type: "LOGIN",
-      username: '',
-      userrole: {}
-    });
-    store.dispatch({
-      type: "LOAD_DATA",
-      rowdata: [],
-      lastLoadedIndex: 0
-    });
     this.props.history.push("/login");
   }
 
@@ -69,14 +66,14 @@ class HomePage extends Component {
         <Navbar fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">AKNMS simple event viewer</Link>
+              <Link to="/">AKNMS</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
-              {this.state.isAuthenticated
-                ? <Fragment><Navbar.Text>{store.getState().loginReducer.username}</Navbar.Text><NavItem onClick={this.handleLogout}>Logout</NavItem></Fragment>
+              {sessionStorage.getItem('username') != null
+                ? <Fragment><Navbar.Text>{sessionStorage.getItem('username')}</Navbar.Text><NavItem onClick={this.handleLogout}>Logout</NavItem></Fragment>
                 : <Fragment>
                   <LinkContainer to="/signup">
                     <NavItem>Signup</NavItem>

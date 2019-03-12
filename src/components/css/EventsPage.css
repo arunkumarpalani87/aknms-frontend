@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
 .table-header {
   display: flex;
   width: 100%;
-  background: #000;
+  background: rgb(160, 155, 155);
   padding: 18px 0;
 }
 
@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 18px 0;
 }
 .table-row:nth-of-type(odd) {
-  background: #EEEEEE;
+  background: rgb(121, 116, 116);
 }
 
 .table-data, .header__item {
