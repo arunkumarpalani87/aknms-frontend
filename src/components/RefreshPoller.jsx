@@ -4,58 +4,39 @@ import React from "react";
 
 
 class RefreshPoller extends React.Component {
-
     constructor(props) {
-        super()
-        console.log("props.timeInterval ", props.timeInterval)
-
-        if (typeof props.timeInterval == String) {
-            props.timeInterval = Array.from(props.timeInterval)
+        super(props);
+        this.updateInterval = (e) => {
+            this.props.updateInterval(e.target.value);
         }
-        
-        
     }
-
-    componentWillMount() {
-        if(this.props.timeInterval == undefined) {
-            this.setState({
-                timeIntervalFrequency: [10, 20, 30, 40, 50, 60]
-            })
-        } else {
-            this.setState({
-                timeIntervalFrequency: this.props.timeInterval
-            })
-        }
-          
-    }
-
-    componentDidMount() {        
-        console.log("Selected Value after mount ", this.refs.selectTimeInterval.value)
-        
-    }
-
-    onSelect =(event) => {
-        setTimeout(function(){
-            document.getElementById("eventsPage").reload();
-          },60)
-    }
-
-
-    componentWillUnmount() {
-           }
-
+    
     render() {
-        return(
+        const intervals = {
+            5000: "5 Secs",
+            10000: "10 Secs",
+            20000: "20 Secs",
+            30000: "30 Secs",
+            40000: "40 Secs",
+            50000: "50 Secs",
+            60000: "60 Secs"
+        }
+
+        const options = Object.keys(intervals).map(key =>
+            <option key={key} value={key}>{intervals[key]}</option>
+        )
+
+        return (
             <div>
-                Refresh every <select onChange={this.onSelect} ref="selectTimeInterval">             
-                  {this.state.timeIntervalFrequency.map(timeUnit=>
-                      <option key={timeUnit} value={timeUnit}>{timeUnit}</option>
-                  )}
-                </select> seconds
+                Polling Interval &nbsp;
+                <select onChange={this.updateInterval} defaultValue={this.props.defaultInterval}>
+                    <option value='-1'>Select Interval</option>
+                    {options}
+                    )
+                </select>
             </div>
         );
     }
-
 }
 
 export default RefreshPoller;

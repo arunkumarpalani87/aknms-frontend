@@ -45,7 +45,6 @@ class HomePage extends Component {
     store.dispatch({
       type: "CLEAR_DATA"
     });
-    alert("test clear")
     sessionStorage.clear();
     await Auth.signOut();
     this.userHasAuthenticated(false);
@@ -72,6 +71,7 @@ class HomePage extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav pullRight>
+            
               {sessionStorage.getItem('username') != null
                 ? <Fragment><Navbar.Text>{sessionStorage.getItem('username')}</Navbar.Text><NavItem onClick={this.handleLogout}>Logout</NavItem></Fragment>
                 : <Fragment>
