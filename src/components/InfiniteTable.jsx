@@ -129,17 +129,20 @@ class InfiniteTable extends React.Component {
         }
         console.log("render - Headers", headers);
         return (
+            <div>
+            <div class="table-header">
+                    {headers.map(header => (<div class="header__item" ><a id={header.headername} class="filter__link" href="#" onClick={() => this.handleSort(header.fieldname)}>{header.headername}</a></div>))}
+                </div>
             <div
                 className="infiniteTable"
                 ref="iScroll"
                 style={{ height: "600px", overflow: "auto" }}>
-                <div class="table-header">
-                    {headers.map(header => (<div class="header__item" ><a id={header.headername} class="filter__link" href="#" onClick={() => this.handleSort(header.fieldname)}>{header.headername}</a></div>))}
-                </div>
+                
 
                 <div class="table-content">
                     {store.getState().infiniteTableReducer.rowdata.map(row => (this.createRowWithDiv(row)))}
                 </div>
+            </div>
             </div>
         )
 
