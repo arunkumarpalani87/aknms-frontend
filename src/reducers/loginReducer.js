@@ -17,6 +17,7 @@ function loginReducer(state = {
             return {
                 username: '',
                 loggedin: false
+               
             }
         default:
             return state;

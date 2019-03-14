@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import store from '../store/store';
 import "./css/Home.css";
 
 class Home extends Component {
@@ -30,10 +29,26 @@ class Home extends Component {
     );
   }
 
+  renderAdminPage() {
+    return (
+      <div className="lander">
+      <div>
+      <Link to="/eventsPage">View Events</Link>
+      </div>
+      <div>
+      <Link to="/userPage">View Users</Link>
+      </div>
+      {/* <div>
+      <Link to="/devicePage">View Devices</Link>
+      </div> */}
+  </div>
+    );
+  }
+
   render() {
     return (
       <div className="Home">
-        {store.getState().loginReducer.loggedin ? this.renderEventsPage() : this.renderLander()}
+        {sessionStorage.getItem("username") !=null ? sessionStorage.getItem("userrole") === 'admin' ? this.renderAdminPage() : this.renderEventsPage() : this.renderLander()}
       </div>
     );
   }

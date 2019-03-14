@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 18px 0;
 }
 .table-row:nth-of-type(odd) {
-  background: rgb(121, 116, 116);
+  background: rgb(240, 235, 235);
 }
 
 .table-data, .header__item {

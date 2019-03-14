@@ -1,6 +1,5 @@
 import React from 'react';
 import store from '../store/store.js';
-import compareValues from '../utilities/sort.js';
 import './css/EventsPage.css';
 
 
@@ -15,6 +14,7 @@ class InfiniteTable extends React.Component {
         store.subscribe(() => { this.forceUpdate() });
     }
 
+   
     /* Regular Table - Not Used */
     createRow(rowData) {
         let row = [];
@@ -39,9 +39,17 @@ class InfiniteTable extends React.Component {
         row.push(<div class="table-row">{cellsArray}</div>)
         return row;
     }
+    componentWillUnmount() {
+        console.log("Calling componentunMount");
+        store.dispatch({
+            type: "CLEAR_DATA"
+          });
+    }
 
+    
     componentDidMount() {
         console.log("Calling componentDidMount");
+        
         this.loadData(this.props.initialRecordCount);
         this.refs.iScroll.addEventListener("scroll", () => {
             if (this.refs.iScroll.scrollTop + this.refs.iScroll.clientHeight >= this.refs.iScroll.scrollHeight) {
@@ -64,21 +72,34 @@ class InfiniteTable extends React.Component {
         return date.toLocaleString();
     }
 
+    handleSort = (name) => {
+        
+        sessionStorage.setItem('sort_key',name);
+        sessionStorage.getItem('sort_dir') === 'ASC' ? sessionStorage.setItem('sort_dir','DESC') : sessionStorage.setItem('sort_dir','ASC') ;
+        store.dispatch({
+            type: "CLEAR_DATA"
+          });
+        this.loadData(this.props.initialRecordCount);
+    }
     async loadData(recordCount) {
         console.log("Calling loadData");
+        var userquery = '&user=' + sessionStorage.getItem('username');
+        if (sessionStorage.getItem('userrole') === 'admin') {
+            userquery = '';
+        }
         let lastLoadedIndex = store.getState().infiniteTableReducer.lastLoadedIndex;
-        let resultValue = await fetch(this.url + '/event?id-from=' + (lastLoadedIndex + 1) + '&count=' + recordCount + '&user=' + store.getState().loginReducer.username);
+        let resultValue = await fetch(this.url + '/event?id-from=' + lastLoadedIndex + '&count=' + recordCount + userquery + '&sort_dir='+sessionStorage.getItem('sort_dir')+ '&sort_key='+sessionStorage.getItem('sort_key'));
+        console.log(resultValue)
+
         let resultJson = await resultValue.json();
+        console.log(resultJson)
+
         if (resultJson.length === 0) {
             console.log("loadData - fetch returned empty array");
             return;
         }
 
-        console.log('loadData - Before Sorting', resultJson);
-        const resultJsonDesc = [...resultJson].sort(compareValues('id', 'desc'));
-        console.log('loadData - After Sorting', resultJsonDesc);
-
-        let newlastLoadedIndex = resultJsonDesc[0].id;
+        let newlastLoadedIndex = lastLoadedIndex+1;
         console.log("loadData - newlastLoadedIndex", newlastLoadedIndex);
         if (newlastLoadedIndex === lastLoadedIndex) {
             console.log("loadData - returned value is already loaded");
@@ -88,12 +109,10 @@ class InfiniteTable extends React.Component {
         let rowdata = resultJson.map((row) => {
             let newRow = row;
             newRow.timestamp = this.fetchDate(row.timestamp.toString());
-            // newRow.timestamp = (new Date(row.timestamp).toDateString()) + " " + (new Date(row.timestamp).toLocaleTimeString());
             delete newRow.managedElement;
             return newRow;
         })
 
-        // console.log("loadData - rowdata", rowdata)
         rowdata = Object.assign([], store.getState().infiniteTableReducer.rowdata.concat(rowdata));
         store.dispatch({
             type: "LOAD_DATA",
@@ -105,7 +124,6 @@ class InfiniteTable extends React.Component {
     render() {
         console.log("Calling Table Render");
         let headers = this.props.headers;
-
         if (headers === undefined || headers.length === 0) {
             return (<div className="infiniteTable" ref="iScroll"><b>Error - Table Headers Undefined</b></div>);
         }
@@ -116,7 +134,7 @@ class InfiniteTable extends React.Component {
                 ref="iScroll"
                 style={{ height: "600px", overflow: "auto" }}>
                 <div class="table-header">
-                    {headers.map(header => (<div class="header__item"><a id={header.headername} class="filter__link" href="#">{header.headername}</a></div>))}
+                    {headers.map(header => (<div class="header__item" ><a id={header.headername} class="filter__link" href="#" onClick={() => this.handleSort(header.fieldname)}>{header.headername}</a></div>))}
                 </div>
 
                 <div class="table-content">
@@ -125,26 +143,14 @@ class InfiniteTable extends React.Component {
             </div>
         )
 
-        /* Regular Table - Not Used
-        <table align="center">
-            <style>{"table, th, td {border:1px solid black; border-collapse: collapse;}"}</style>
-            <tr>
-                {headers.map(header => (<th>{header.headername}</th>))}
-            </tr>
-            {store.getState().infiniteTableReducer.rowdata.map(row => (this.createRow(row)))}
-        </table>
-        */
+        
     };
 };
 
 InfiniteTable.defaultProps = {
-    initialRecordCount: 50,
+    initialRecordCount: 20,
     additionalRecordCount: 20
 }
 
-/*
-InfiniteTable.contextTypes = {
-    store : PropTypes.object
-}
-*/
+
 export default InfiniteTable;

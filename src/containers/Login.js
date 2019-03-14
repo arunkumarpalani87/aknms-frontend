@@ -44,10 +44,19 @@ export default class Login extends Component {
             });
 
             let info = await Auth.currentSession()
-            let userInfo = JSON.stringify(info);
+            let userInfo = JSON.stringify(info.idToken.payload);
             sessionStorage.setItem('username', this.state.email )
-            sessionStorage.setItem('userInfo', userInfo );
-            this.props.history.push("/eventsPage");
+            sessionStorage.setItem('sort_dir',"DESC");
+            sessionStorage.setItem('sort_key',"id");
+            
+            if (userInfo.match("cognito:groups.*admin")){
+                sessionStorage.setItem('userrole', 'admin' );
+                this.props.history.push("/");
+                
+            } else {
+                sessionStorage.setItem('userrole', 'networkoperator' );
+                this.props.history.push("/eventsPage");
+            }
         } catch (e) {
             alert(e.message);
             this.setState({ isLoading: false });

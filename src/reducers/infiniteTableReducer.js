@@ -11,6 +11,13 @@ function infiniteTableReducer(state = {
                 rowdata: action.rowdata,
                 lastLoadedIndex: action.lastLoadedIndex
             }
+        case 'CLEAR_DATA':
+            console.log("Reducer table Mount - Curr State", state);
+            console.log("Reducer table Mount - Action username", action.username);
+            return {
+                lastLoadedIndex: 0,
+                rowdata: []
+            }
         default:
             return state;
     }

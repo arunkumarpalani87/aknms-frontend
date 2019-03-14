@@ -23,15 +23,17 @@ class EventsChartLegend extends React.Component {
                 }}
             >
                 {this.props.data.map((e) =>
-                    <li
+                    <li 
                         style={{
                             float: "left",
-                            "margin-right": "300px"
-                        }}>
+                            "margin-right":"85px",
+                            "margin-bottom": "90px"
+                    }}>
                         <span
                             style={{
                                 border: "1px solid #ccc",
                                 float: "left",
+                                clear: "left",
                                 width: "12px",
                                 height: "12px",
                                 margin: "2px",
@@ -70,7 +72,7 @@ class EventsChart extends React.Component {
     // Unused Function - Not working
     async fetchDataAsync() {
 
-        let countResult = await fetch(this.url + '?user=' + store.getState().loginReducer.username);
+        let countResult = await fetch(this.url + '?user=' + sessionStorage.getItem('username'));
         let countJson = await countResult.json();
         let chartData = countJson.map((eventCountRecord) => {
             let chartEntry = {
@@ -117,15 +119,17 @@ class EventsChart extends React.Component {
         }
         return (
             <div>
-                <EventsChartLegend data={this.state.chartdata} />
-
                 <PieChart
                     data={this.state.chartdata}
                     radius={30}
-                    style={{ height: '300px' }}
+                    style={{ height: '300px', 'margin-bottom': '25px' }}
                     animate
                     animationDuration={2000}
+                    
                 />
+                <EventsChartLegend data={this.state.chartdata} />
+
+                
 
             </div>
         );
