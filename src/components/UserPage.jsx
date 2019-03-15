@@ -1,9 +1,7 @@
 import React from "react";
 import {  withRouter } from "react-router-dom";
-import {Button } from "react-bootstrap";
 
 import './css/EventsPage.css';
-import MapDevice from "./MapDevice.jsx"
 
 
 class UserPage extends React.Component {
@@ -82,7 +80,7 @@ class UserPage extends React.Component {
         return (
             <div>
                 <div class="table-header">
-                    {headers.map(header => (<div class="header__item" ><a id={header.headername} class="filter__link" href="#" onClick={() => this.handleSort(header.fieldname)}>{header.headername}</a></div>))}
+                    {headers.map(header => (<div class="header__item" ><a id={header.headername} class="filter__link" href="#">{header.headername}</a></div>))}
                 </div>
                 <div class="table-content">
                     {this.state.rowdata.map(row => (this.createRowWithDiv(row)))}

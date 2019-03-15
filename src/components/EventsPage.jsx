@@ -4,7 +4,6 @@ import store from "../store/store.js";
 import EventsChart from "./EventsChart.jsx";
 import InfiniteTable from './InfiniteTable.jsx';
 import Login from "../containers/Login.js";
-import RefreshPoller from "./RefreshPoller.jsx";
 
 
 class EventsPage extends React.Component {
