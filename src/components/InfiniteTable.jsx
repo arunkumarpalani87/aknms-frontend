@@ -1,6 +1,7 @@
 import React from 'react';
 import store from '../store/store.js';
 import './css/EventsPage.css';
+import { Button } from "react-bootstrap";
 
 
 class InfiniteTable extends React.Component {
@@ -12,7 +13,11 @@ class InfiniteTable extends React.Component {
         this.host_pathname = '/aknms/v1';
         this.url = "https://" + this.host_name + this.host_port + this.host_pathname;
         store.subscribe(() => { this.forceUpdate() });
-    }
+        this.state = {
+            textVal: '',
+            filterValue: ''
+        };    }
+
 
    
     /* Regular Table - Not Used */
@@ -71,7 +76,30 @@ class InfiniteTable extends React.Component {
         console.log("Date", date);
         return date.toLocaleString();
     }
+    handleFilterType = (name) => {
+       this.setState({filterValue: name.target.value})
+       sessionStorage.setItem('filter_value','');
+       this.setState({textVal: ''})
+       
+    }
 
+    handleFilterValue = (name) => {
+        
+        this.setState({textVal: name.target.value})
+    }
+    handleFilter = (name) => {
+        sessionStorage.setItem('filter_key',this.state.filterValue);
+        sessionStorage.setItem('filter_value',this.state.textVal);
+        if (this.state.filterValue !== '-1' && this.state.textVal === '') {
+            alert('Please enter value to filter');
+        } else {
+       
+        store.dispatch({
+            type: "CLEAR_DATA"
+          });
+        this.loadData(this.props.initialRecordCount);
+        }
+    }
     handleSort = (name) => {
         
         sessionStorage.setItem('sort_key',name);
@@ -87,8 +115,12 @@ class InfiniteTable extends React.Component {
         if (sessionStorage.getItem('userrole') === 'admin') {
             userquery = '';
         }
+        let filterQuery =''
+        if(sessionStorage.getItem('filter_key') !== '' ) {
+            filterQuery='&'+sessionStorage.getItem('filter_key')+'='+sessionStorage.getItem('filter_value')
+        }
         let lastLoadedIndex = store.getState().infiniteTableReducer.lastLoadedIndex;
-        let resultValue = await fetch(this.url + '/event?id-from=' + lastLoadedIndex + '&count=' + recordCount + userquery + '&sort_dir='+sessionStorage.getItem('sort_dir')+ '&sort_key='+sessionStorage.getItem('sort_key'));
+        let resultValue = await fetch(this.url + '/event?id-from=' + lastLoadedIndex + '&count=' + recordCount + userquery + '&sort_dir='+sessionStorage.getItem('sort_dir')+ '&sort_key='+sessionStorage.getItem('sort_key')+filterQuery);
         console.log(resultValue)
 
         let resultJson = await resultValue.json();
@@ -128,8 +160,22 @@ class InfiniteTable extends React.Component {
             return (<div className="infiniteTable" ref="iScroll"><b>Error - Table Headers Undefined</b></div>);
         }
         console.log("render - Headers", headers);
+        let filterKeys = this.props.filterOptions;
+       
         return (
             <div>
+                <div>
+                
+                <select onChange={this.handleFilterType} defaultValue="">
+                    <option value='-1'>None</option>
+                    <option value='source'>IPAddress</option>
+                    <option value='type'>Log Type</option>
+                </select>&nbsp;
+                <input type="text" autofocus="autofocus"  onChange={this.handleFilterValue} value={this.state.textVal}/>
+                &nbsp;
+                <Button variant="filter"  onClick={this.handleFilter}>Filter</Button>
+            </div>
+            <div></div>
             <div class="table-header">
                     {headers.map(header => (<div class="header__item" ><a id={header.headername} class="filter__link" href="#" onClick={() => this.handleSort(header.fieldname)}>{header.headername}</a></div>))}
                 </div>
